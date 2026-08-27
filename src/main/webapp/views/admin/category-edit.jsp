@@ -1,127 +1,436 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Sửa Category</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Category - Management System</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
+    
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f5f5f5;
+        /* Base Enterprise Design System */
+        :root {
+            --bg-body: #f8fafc;
+            --bg-surface: #ffffff;
+            --color-primary: #2563eb;
+            --color-primary-hover: #1d4ed8;
+            --color-warning: #d97706;
+            --color-warning-hover: #b45309;
+            --border-color: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            
+            --sidebar-width: 260px;
+            --header-height: 64px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
         }
-        h2 {
-            color: #333;
-        }
-        .form-container {
-            background-color: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            max-width: 500px;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            color: #555;
-        }
-        input[type="text"], input[type="file"] {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+
+        *, *::before, *::after {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.5;
             font-size: 14px;
         }
-        input[type="text"]:focus, input[type="file"]:focus {
-            border-color: #007bff;
-            outline: none;
+
+        a { text-decoration: none; color: inherit; }
+
+        /* Layout Structure */
+        .app-layout { display: flex; min-height: 100vh; }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-surface);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 40;
         }
-        .radio-group {
-            margin-top: 5px;
+
+        .sidebar-header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            border-bottom: 1px solid var(--border-color);
         }
-        .radio-group label {
-            display: inline;
-            font-weight: normal;
-            margin-left: 5px;
-        }
-        .radio-group input[type="radio"] {
-            margin-left: 15px;
-        }
-        .radio-group input[type="radio"]:first-of-type {
-            margin-left: 0;
-        }
-        input[type="submit"] {
-            margin-top: 20px;
-            padding: 10px 30px;
-            background-color: #ffc107;
-            color: #333;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
             font-size: 16px;
-            font-weight: bold;
         }
-        input[type="submit"]:hover {
-            background-color: #e0a800;
+
+        .brand i { color: var(--color-primary); font-size: 20px; }
+
+        .sidebar-nav { padding: 24px 16px; flex: 1; }
+
+        .nav-group-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            padding-left: 12px;
         }
-        img.preview {
-            margin-top: 10px;
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .nav-item i { font-size: 16px; width: 20px; text-align: center; }
+        .nav-item:hover { background-color: var(--bg-body); color: var(--text-primary); }
+        .nav-item.active { background-color: #eff6ff; color: var(--color-primary); }
+
+        .main-wrapper {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-header {
+            height: var(--header-height);
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 30;
+        }
+
+        .header-search { position: relative; width: 300px; }
+        .header-search i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .header-search input {
+            width: 100%;
+            padding: 8px 12px 8px 36px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background-color: var(--bg-body);
+            font-family: inherit;
+            font-size: 13px;
+        }
+        .header-search input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .header-actions { display: flex; align-items: center; gap: 16px; }
+        
+        .user-profile { display: flex; align-items: center; gap: 12px; padding-left: 16px; border-left: 1px solid var(--border-color); cursor: pointer; }
+        .avatar { width: 32px; height: 32px; border-radius: 50%; background-color: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; }
+
+        .page-content { padding: 32px; flex: 1; max-width: 900px; margin: 0 auto; width: 100%; }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .breadcrumb a { color: var(--text-secondary); }
+        .breadcrumb a:hover { color: var(--color-primary); }
+        
+        .page-header { margin-bottom: 24px; }
+
+        .page-title h1 { font-size: 24px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+        .page-title p { color: var(--text-secondary); font-size: 14px; }
+
+        /* Form Card */
+        .form-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            padding: 32px;
+        }
+
+        .form-section { margin-bottom: 24px; }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-label span.required { color: #dc2626; margin-left: 4px; }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-text { display: block; margin-top: 6px; font-size: 12.5px; color: var(--text-secondary); }
+
+        /* Current Image Display */
+        .current-image-box {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+        }
+
+        .current-image-box img {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
             border-radius: 4px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
         }
-        a.back-link {
-            display: inline-block;
-            margin-top: 15px;
-            color: #007bff;
-            text-decoration: none;
+
+        .current-image-info h4 { font-size: 13px; margin-bottom: 4px; font-weight: 600; }
+        .current-image-info p { font-size: 12.5px; color: var(--text-secondary); }
+
+        /* Radio Buttons */
+        .radio-group { display: flex; gap: 24px; margin-top: 8px; }
+        .radio-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 400; color: var(--text-secondary); }
+        .radio-label input[type="radio"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--color-primary); }
+
+        /* Actions */
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 32px;
         }
-        a.back-link:hover {
-            text-decoration: underline;
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
         }
+
+        .btn-warning { background-color: var(--color-warning); color: white; box-shadow: var(--shadow-sm); }
+        .btn-warning:hover { background-color: var(--color-warning-hover); }
+
+        .btn-secondary { background-color: var(--bg-surface); color: var(--text-primary); border-color: var(--border-color); box-shadow: var(--shadow-sm); }
+        .btn-secondary:hover { background-color: #f1f5f9; }
+
+        .image-preview { margin-top: 12px; display: none; }
+        .image-preview img { max-width: 200px; max-height: 140px; border-radius: var(--radius-md); border: 1px solid var(--border-color); object-fit: cover; }
+
     </style>
 </head>
 <body>
-    <h2>Sửa Category</h2>
-    <div class="form-container">
-        <form action="<c:url value="/admin/category/update"/>" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="categoryid" value="${cate.categoryId}">
 
-            <label for="categoryname">Tên Category:</label>
-            <input type="text" id="categoryname" name="categoryname" value="${cate.categoryname}" required>
-
-            <label for="images">Link hình ảnh (URL):</label>
-            <input type="text" id="images" name="images" value="${cate.images}">
-
-            <label>Hình ảnh hiện tại:</label>
-            <c:choose>
-                <c:when test="${cate.images != null && cate.images.length() >= 5 && cate.images.substring(0,5) == 'https'}">
-                    <c:url value="${cate.images}" var="imgUrl"></c:url>
-                </c:when>
-                <c:otherwise>
-                    <c:url value="/image?fname=${cate.images}" var="imgUrl"></c:url>
-                </c:otherwise>
-            </c:choose>
-            <img class="preview" height="150" width="200" src="${imgUrl}" alt="${cate.categoryname}"/>
-
-            <label for="images1">Upload hình ảnh mới:</label>
-            <input type="file" id="images1" name="images1" accept="image/*">
-
-            <label>Trạng thái:</label>
-            <div class="radio-group">
-                <input type="radio" id="ston" name="status" value="1" ${cate.status == 1 ? 'checked' : ''}>
-                <label for="ston">Hoạt động</label>
-                <input type="radio" id="stoff" name="status" value="0" ${cate.status != 1 ? 'checked' : ''}>
-                <label for="stoff">Khóa</label>
+    <div class="app-layout">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <i class="fas fa-layer-group"></i>
+                    <span>System Admin</span>
+                </div>
             </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-group-title">Overview</div>
+                <a href="<c:url value='/'/>" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                
+                <div class="nav-group-title" style="margin-top: 24px;">Management</div>
+                <a href="<c:url value='/admin/categories'/>" class="nav-item active">
+                    <i class="fas fa-tags"></i>
+                    <span>Categories</span>
+                </a>
+            </nav>
+        </aside>
 
-            <br>
-            <input type="submit" value="Cập nhật">
-        </form>
-        <a class="back-link" href="<c:url value="/admin/categories"/>">← Quay lại danh sách</a>
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search categories..." aria-label="Search">
+                </div>
+                
+                <div class="header-actions">
+                    <div class="user-profile">
+                        <div class="avatar">AD</div>
+                        <span style="font-weight: 500; font-size: 14px;">Administrator</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="page-content">
+                
+                <div class="breadcrumb">
+                    <a href="<c:url value='/'/>">Dashboard</a>
+                    <i class="fas fa-chevron-right" style="font-size: 10px;"></i>
+                    <a href="<c:url value='/admin/categories'/>">Categories</a>
+                    <i class="fas fa-chevron-right" style="font-size: 10px;"></i>
+                    <span style="color: var(--text-primary); font-weight: 500;">Edit</span>
+                </div>
+
+                <div class="page-header">
+                    <div class="page-title">
+                        <h1>Edit Category</h1>
+                        <p>Updating details for category #${cate.categoryId}</p>
+                    </div>
+                </div>
+
+                <!-- Form Card -->
+                <div class="form-card">
+                    <form action="<c:url value='/admin/category/update'/>" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="categoryid" value="${cate.categoryId}">
+                        
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label for="categoryname" class="form-label">
+                                    Category Name <span class="required" aria-hidden="true">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="categoryname" name="categoryname" value="${cate.categoryname}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="images" class="form-label">Image URL</label>
+                                <input type="url" class="form-control" id="images" name="images" value="${cate.images}">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Current Image</label>
+                                <div class="current-image-box">
+                                    <c:choose>
+                                        <c:when test="${cate.images != null && cate.images.length() >= 5 && cate.images.substring(0,5) == 'https'}">
+                                            <c:url value="${cate.images}" var="imgUrl"></c:url>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:url value="/image?fname=${cate.images}" var="imgUrl"></c:url>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <img src="${imgUrl}" alt="Current image for ${cate.categoryname}"/>
+                                    <div class="current-image-info">
+                                        <h4>Image currently in use</h4>
+                                        <p>To change it, provide a new URL above or upload a new file below.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="images1" class="form-label">Upload New Image</label>
+                                <input type="file" class="form-control" style="padding: 7px 12px;" id="images1" name="images1" accept="image/*" onchange="previewImage(this)">
+                                <span class="form-text">Leave empty to keep the current image.</span>
+                                <div class="image-preview" id="imagePreview">
+                                    <img id="previewImg" src="" alt="Image preview">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <div class="radio-group">
+                                    <label class="radio-label" for="ston">
+                                        <input type="radio" id="ston" name="status" value="1" ${cate.status == 1 ? 'checked' : ''}>
+                                        Active
+                                    </label>
+                                    <label class="radio-label" for="stoff">
+                                        <input type="radio" id="stoff" name="status" value="0" ${cate.status != 1 ? 'checked' : ''}>
+                                        Locked
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-warning">Update Category</button>
+                            <a href="<c:url value='/admin/categories'/>" class="btn btn-secondary">Cancel</a>
+                        </div>
+                        
+                    </form>
+                </div>
+
+            </main>
+        </div>
     </div>
+
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            const img = document.getElementById('previewImg');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.style.display = 'none';
+                img.src = '';
+            }
+        }
+    </script>
 </body>
 </html>
