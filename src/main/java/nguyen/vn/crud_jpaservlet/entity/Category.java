@@ -1,6 +1,7 @@
 package nguyen.vn.crud_jpaservlet.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -28,7 +29,11 @@ public class Category implements Serializable {
 
     // bi-directional many-to-one association to Video
     @OneToMany(mappedBy = "category")
-    private List<Video> videos;
+    private List<Video> videos = new ArrayList<>();
+
+    // bi-directional one-to-many association to Product
+    @OneToMany(mappedBy = "category")
+    private List<Product> products = new ArrayList<>();
 
     public Category() {
     }
@@ -83,5 +88,25 @@ public class Category implements Serializable {
         getVideos().remove(video);
         video.setCategory(null);
         return video;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public Product addProduct(Product product) {
+        getProducts().add(product);
+        product.setCategory(this);
+        return product;
+    }
+
+    public Product removeProduct(Product product) {
+        getProducts().remove(product);
+        product.setCategory(null);
+        return product;
     }
 }

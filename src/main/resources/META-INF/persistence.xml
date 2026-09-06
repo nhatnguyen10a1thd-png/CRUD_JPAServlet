@@ -6,6 +6,7 @@
 
     <persistence-unit name="jpa-hibernate-mysql">
         <class>nguyen.vn.crud_jpaservlet.entity.Category</class>
+        <class>nguyen.vn.crud_jpaservlet.entity.Product</class>
         <class>nguyen.vn.crud_jpaservlet.entity.Video</class>
         <class>nguyen.vn.crud_jpaservlet.entity.User</class>
         <class>nguyen.vn.crud_jpaservlet.entity.Share</class>
@@ -18,7 +19,6 @@
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2012Dialect"/>
         </properties>
     </persistence-unit>
 

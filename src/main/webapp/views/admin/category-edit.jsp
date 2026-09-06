@@ -293,15 +293,23 @@
             
             <nav class="sidebar-nav">
                 <div class="nav-group-title">Overview</div>
-                <a href="<c:url value='/'/>" class="nav-item">
+                <a href="<c:url value='/home'/>" class="nav-item">
                     <i class="fas fa-chart-line"></i>
                     <span>Dashboard</span>
+                </a>
+                <a href="<c:url value='/product'/>" class="nav-item">
+                    <i class="fas fa-store"></i>
+                    <span>Shop</span>
                 </a>
                 
                 <div class="nav-group-title" style="margin-top: 24px;">Management</div>
                 <a href="<c:url value='/admin/categories'/>" class="nav-item active">
                     <i class="fas fa-tags"></i>
                     <span>Categories</span>
+                </a>
+                <a href="<c:url value='/admin/products'/>" class="nav-item">
+                    <i class="fas fa-box"></i>
+                    <span>Products</span>
                 </a>
             </nav>
         </aside>
@@ -328,7 +336,7 @@
             <main class="page-content">
                 
                 <div class="breadcrumb">
-                    <a href="<c:url value='/'/>">Dashboard</a>
+                    <a href="<c:url value='/home'/>">Dashboard</a>
                     <i class="fas fa-chevron-right" style="font-size: 10px;"></i>
                     <a href="<c:url value='/admin/categories'/>">Categories</a>
                     <i class="fas fa-chevron-right" style="font-size: 10px;"></i>

@@ -1,9 +1,12 @@
 package nguyen.vn.crud_jpaservlet.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Locale;
+import java.util.Set;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,6 +20,7 @@ import nguyen.vn.crud_jpaservlet.config.Constants;
 public class ImageServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    private static final Set<String> ALLOWED_EXTENSIONS = Set.of("jpg", "jpeg", "png", "gif", "webp");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,44 +30,45 @@ public class ImageServlet extends HttpServlet {
             return;
         }
 
-        String filePath = Constants.DIR + "/" + fname;
-        File file = new File(filePath);
-
-        if (!file.exists()) {
+        Path uploadDirectory = Paths.get(Constants.DIR).toAbsolutePath().normalize();
+        Path file;
+        try {
+            file = uploadDirectory.resolve(fname).normalize();
+        } catch (InvalidPathException ex) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        // Xác định content type từ extension
-        String ext = fname.substring(fname.lastIndexOf(".") + 1).toLowerCase();
-        switch (ext) {
-            case "jpg":
-            case "jpeg":
-                resp.setContentType("image/jpeg");
-                break;
-            case "png":
-                resp.setContentType("image/png");
-                break;
-            case "gif":
-                resp.setContentType("image/gif");
-                break;
-            case "webp":
-                resp.setContentType("image/webp");
-                break;
-            default:
-                resp.setContentType("application/octet-stream");
-                break;
+        String extension = extensionOf(fname);
+        if (!file.startsWith(uploadDirectory)
+                || !file.getParent().equals(uploadDirectory)
+                || !Files.isRegularFile(file)
+                || !ALLOWED_EXTENSIONS.contains(extension)) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
         }
 
-        resp.setContentLength((int) file.length());
+        resp.setContentType(contentTypeFor(extension));
+        resp.setHeader("X-Content-Type-Options", "nosniff");
+        resp.setContentLengthLong(Files.size(file));
+        Files.copy(file, resp.getOutputStream());
+    }
 
-        try (FileInputStream fis = new FileInputStream(file);
-             OutputStream os = resp.getOutputStream()) {
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = fis.read(buffer)) != -1) {
-                os.write(buffer, 0, bytesRead);
-            }
+    private String extensionOf(String fileName) {
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex < 0 || dotIndex == fileName.length() - 1) {
+            return "";
         }
+        return fileName.substring(dotIndex + 1).toLowerCase(Locale.ROOT);
+    }
+
+    private String contentTypeFor(String extension) {
+        return switch (extension) {
+            case "jpg", "jpeg" -> "image/jpeg";
+            case "png" -> "image/png";
+            case "gif" -> "image/gif";
+            case "webp" -> "image/webp";
+            default -> "application/octet-stream";
+        };
     }
 }
