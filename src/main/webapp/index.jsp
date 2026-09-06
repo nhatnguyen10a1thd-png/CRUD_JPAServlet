@@ -1,23 +1,26 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Management System</title>
-    
+
     <!-- Resource Hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
+
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+
     <!-- Minimal Favicon setup (Fallback) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
-    
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
+
     <style>
         /* Design System Variables */
         :root {
@@ -30,13 +33,13 @@
             --text-primary: #0f172a;
             --text-secondary: #475569;
             --text-muted: #94a3b8;
-            
+
             /* Spacing & Sizes */
             --sidebar-width: 260px;
             --header-height: 64px;
             --radius-md: 6px;
             --radius-lg: 8px;
-            
+
             /* Shadows */
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -337,85 +340,105 @@
 </head>
 <body>
 
-    <div class="app-layout">
-        
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="brand">
-                    <i class="fas fa-layer-group"></i>
-                    <span>System Admin</span>
+<div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <i class="fas fa-layer-group"></i>
+                <span>System Admin</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-group-title">Overview</div>
+            <a href="<c:url value='/'/>" class="nav-item active">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <div class="nav-group-title" style="margin-top: 24px;">Management</div>
+            <a href="<c:url value='/admin/categories'/>" class="nav-item">
+                <i class="fas fa-tags"></i>
+                <span>Categories</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+        <!-- Header -->
+        <header class="top-header">
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search resources...">
+            </div>
+
+            <div class="header-actions">
+                <button class="icon-btn" aria-label="Notifications">
+                    <i class="far fa-bell"></i>
+                </button>
+                <div class="user-profile">
+                    <div class="avatar">
+                        <c:choose>
+                            <c:when test="${not empty sessionScope.loggedInFullname}">
+                                ${fn:substring(sessionScope.loggedInFullname, 0, 1)}
+                            </c:when>
+                            <c:otherwise>AD</c:otherwise>
+                        </c:choose>
+                    </div>
+                    <span style="font-weight: 500; font-size: 14px;">
+                            <c:choose>
+                                <c:when test="${not empty sessionScope.loggedInFullname}">
+                                    ${sessionScope.loggedInFullname}
+                                </c:when>
+                                <c:otherwise>Administrator</c:otherwise>
+                            </c:choose>
+                        </span>
+                </div>
+                <a href="<c:url value='/logout'/>" class="icon-btn" aria-label="Logout" title="Đăng xuất"
+                   style="color: #ef4444; margin-left: 4px;">
+                    <i class="fas fa-right-from-bracket"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="page-content">
+
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>Dashboard Overview</h1>
+                    <p>Welcome back, <c:out value="${sessionScope.loggedInFullname}" default="Administrator"/>. Here's
+                        what's happening today.</p>
                 </div>
             </div>
-            
-            <nav class="sidebar-nav">
-                <div class="nav-group-title">Overview</div>
-                <a href="<c:url value='/'/>" class="nav-item active">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Dashboard</span>
-                </a>
-                
-                <div class="nav-group-title" style="margin-top: 24px;">Management</div>
-                <a href="<c:url value='/admin/categories'/>" class="nav-item">
-                    <i class="fas fa-tags"></i>
-                    <span>Categories</span>
-                </a>
-            </nav>
-        </aside>
 
-        <!-- Main Wrapper -->
-        <div class="main-wrapper">
-            
-            <!-- Header -->
-            <header class="top-header">
-                <div class="header-search">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search resources...">
-                </div>
-                
-                <div class="header-actions">
-                    <button class="icon-btn" aria-label="Notifications">
-                        <i class="far fa-bell"></i>
-                    </button>
-                    <div class="user-profile">
-                        <div class="avatar">AD</div>
-                        <span style="font-weight: 500; font-size: 14px;">Administrator</span>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Page Content -->
-            <main class="page-content">
-                
-                <div class="page-header">
-                    <div class="page-title">
-                        <h1>Dashboard Overview</h1>
-                        <p>Welcome back, Administrator. Here's what's happening today.</p>
-                    </div>
-                </div>
-
-                <div class="dashboard-grid">
-                    <!-- Quick Access Card -->
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-tags"></i>
-                            </div>
-                            <div class="card-title">Category Management</div>
+            <div class="dashboard-grid">
+                <!-- Quick Access Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-tags"></i>
                         </div>
-                        <div class="card-body">
-                            <p>Manage all product categories in the system. You can create, update, and organize category data.</p>
-                            <a href="<c:url value='/admin/categories'/>" class="btn-primary">
-                                Go to Categories
-                                <i class="fas fa-arrow-right" style="font-size: 12px;"></i>
-                            </a>
-                        </div>
+                        <div class="card-title">Category Management</div>
+                    </div>
+                    <div class="card-body">
+                        <p>Manage all product categories in the system. You can create, update, and organize category
+                            data.</p>
+                        <a href="<c:url value='/admin/categories'/>" class="btn-primary">
+                            Go to Categories
+                            <i class="fas fa-arrow-right" style="font-size: 12px;"></i>
+                        </a>
                     </div>
                 </div>
+            </div>
 
-            </main>
-        </div>
+        </main>
     </div>
+</div>
 
 </body>
 </html>

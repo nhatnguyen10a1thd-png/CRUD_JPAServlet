@@ -68,4 +68,25 @@ public class UserDao implements IUserDao {
             enma.close();
         }
     }
+
+    @Override
+    public void updatePassword(String username, String newPassword) {
+        EntityManager enma = JPAConfig.getEntityManager();
+        EntityTransaction trans = enma.getTransaction();
+        try {
+            trans.begin();
+            User user = enma.find(User.class, username);
+            if (user != null) {
+                user.setPassword(newPassword);
+                enma.merge(user);
+            }
+            trans.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            trans.rollback();
+            throw e;
+        } finally {
+            enma.close();
+        }
+    }
 }

@@ -11,4 +11,8 @@ public interface IUserService {
     User findByUsername(String username);
 
     User findByEmail(String email);
+
+    User login(String username, String password);
+
+    void resetPassword(String username, String newPassword);
 }

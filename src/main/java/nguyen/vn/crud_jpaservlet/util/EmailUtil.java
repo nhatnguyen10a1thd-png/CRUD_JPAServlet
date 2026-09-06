@@ -2,6 +2,7 @@ package nguyen.vn.crud_jpaservlet.util;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
+
 import java.util.Properties;
 
 public class EmailUtil {
@@ -9,8 +10,8 @@ public class EmailUtil {
     // ====== CẤU HÌNH SMTP - THAY ĐỔI THEO TÀI KHOẢN CỦA BẠN ======
     private static final String SMTP_HOST = "smtp.gmail.com";
     private static final int SMTP_PORT = 587;
-    private static final String EMAIL_FROM = "your-email@gmail.com";       // ← Thay bằng Gmail của bạn
-    private static final String EMAIL_PASSWORD = "your-app-password";      // ← Thay bằng App Password
+    private static final String EMAIL_FROM = "nhatnguyen10a1thd@gmail.com";
+    private static final String EMAIL_PASSWORD = "nzeqcwuhevgclwee";
     // ================================================================
 
     /**

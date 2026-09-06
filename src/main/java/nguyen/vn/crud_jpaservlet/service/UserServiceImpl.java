@@ -47,4 +47,24 @@ public class UserServiceImpl implements IUserService {
     public User findByEmail(String email) {
         return userDao.findByEmail(email);
     }
+
+    @Override
+    public User login(String username, String password) {
+        User user = userDao.findByUsername(username);
+        if (user == null) {
+            return null;
+        }
+        if (!user.getActive()) {
+            throw new RuntimeException("Tài khoản chưa được kích hoạt! Vui lòng kiểm tra email để xác thực OTP.");
+        }
+        if (!user.getPassword().equals(password)) {
+            return null;
+        }
+        return user;
+    }
+
+    @Override
+    public void resetPassword(String username, String newPassword) {
+        userDao.updatePassword(username, newPassword);
+    }
 }
