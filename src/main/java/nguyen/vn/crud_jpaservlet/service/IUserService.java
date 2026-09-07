@@ -15,4 +15,6 @@ public interface IUserService {
     User login(String username, String password);
 
     void resetPassword(String username, String newPassword);
+
+    void updateProfile(User user);
 }

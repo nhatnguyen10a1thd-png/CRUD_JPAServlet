@@ -67,4 +67,18 @@ public class UserServiceImpl implements IUserService {
     public void resetPassword(String username, String newPassword) {
         userDao.updatePassword(username, newPassword);
     }
+
+    @Override
+    public void updateProfile(User user) {
+        User existing = userDao.findByUsername(user.getUsername());
+        if (existing == null) {
+            throw new RuntimeException("Không tìm thấy người dùng!");
+        }
+        existing.setFullname(user.getFullname());
+        existing.setPhone(user.getPhone());
+        if (user.getImages() != null) {
+            existing.setImages(user.getImages());
+        }
+        userDao.update(existing);
+    }
 }

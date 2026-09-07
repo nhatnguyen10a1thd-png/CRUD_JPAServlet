@@ -68,6 +68,13 @@
             <version>2.0.3</version>
         </dependency>
 
+        <!-- SiteMesh for layout decoration -->
+        <dependency>
+            <groupId>org.sitemesh</groupId>
+            <artifactId>sitemesh</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+
         <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
