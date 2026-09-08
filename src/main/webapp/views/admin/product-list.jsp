@@ -5,35 +5,9 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý sản phẩm - Product Management</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="<c:url value='/assets/css/product.css'/>">
 </head>
 <body>
-<div class="admin-layout">
-    <aside class="sidebar">
-        <div class="sidebar-brand"><a class="brand" href="<c:url value='/home'/>"><i class="fas fa-layer-group"></i><span>System Admin</span></a></div>
-        <nav class="sidebar-nav" aria-label="Điều hướng quản trị">
-            <div class="nav-title">Tổng quan</div>
-            <a class="admin-nav-item" href="<c:url value='/home'/>"><i class="fas fa-chart-line"></i>Trang chủ</a>
-            <a class="admin-nav-item" href="<c:url value='/product'/>"><i class="fas fa-store"></i>Cửa hàng</a>
-            <div class="nav-title" style="margin-top:22px">Quản lý</div>
-            <a class="admin-nav-item" href="<c:url value='/admin/categories'/>"><i class="fas fa-tags"></i>Danh mục</a>
-            <a class="admin-nav-item active" href="<c:url value='/admin/products'/>"><i class="fas fa-box"></i>Sản phẩm</a>
-        </nav>
-    </aside>
-
-    <div class="admin-main">
-        <header class="admin-topbar">
-            <span><strong><c:out value="${sessionScope.loggedInFullname}" default="Administrator"/></strong></span>
-            <a class="icon-action danger" href="<c:url value='/logout'/>" aria-label="Đăng xuất" title="Đăng xuất"><i class="fas fa-right-from-bracket"></i></a>
-        </header>
-        <main class="admin-content">
             <div class="breadcrumbs"><a href="<c:url value='/home'/>">Trang chủ</a><i class="fas fa-chevron-right"></i><span>Sản phẩm</span></div>
             <div class="admin-page-header">
                 <div><h1>Quản lý sản phẩm</h1><p>Thêm, chỉnh sửa và kiểm soát toàn bộ sản phẩm trong hệ thống.</p></div>
@@ -97,8 +71,5 @@
                     </table>
                 </div>
             </section>
-        </main>
-    </div>
-</div>
 </body>
 </html>

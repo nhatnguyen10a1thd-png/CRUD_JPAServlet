@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -14,6 +15,10 @@
     <sitemesh:write property='head'/>
 </head>
 <body>
+<c:set var="currentUri"
+       value="${not empty requestScope['jakarta.servlet.forward.request_uri']
+               ? requestScope['jakarta.servlet.forward.request_uri']
+               : pageContext.request.requestURI}"/>
 <div class="admin-layout">
     <aside class="sidebar">
         <div class="sidebar-brand">
@@ -21,17 +26,17 @@
         </div>
         <nav class="sidebar-nav" aria-label="Điều hướng quản trị">
             <div class="nav-title">Tổng quan</div>
-            <a class="admin-nav-item${pageContext.request.servletPath == '/home' ? ' active' : ''}"
+            <a class="admin-nav-item${fn:endsWith(currentUri, '/home') ? ' active' : ''}"
                href="<c:url value='/home'/>"><i class="fas fa-chart-line"></i>Trang chủ</a>
-            <a class="admin-nav-item${pageContext.request.servletPath == '/product' ? ' active' : ''}"
+            <a class="admin-nav-item${fn:endsWith(currentUri, '/product') or fn:contains(currentUri, '/product/detail') ? ' active' : ''}"
                href="<c:url value='/product'/>"><i class="fas fa-store"></i>Cửa hàng</a>
             <div class="nav-title" style="margin-top:22px">Quản lý</div>
-            <a class="admin-nav-item${pageContext.request.servletPath.startsWith('/admin/categor') ? ' active' : ''}"
+            <a class="admin-nav-item${fn:contains(currentUri, '/admin/categor') ? ' active' : ''}"
                href="<c:url value='/admin/categories'/>"><i class="fas fa-tags"></i>Danh mục</a>
-            <a class="admin-nav-item${pageContext.request.servletPath.startsWith('/admin/product') ? ' active' : ''}"
+            <a class="admin-nav-item${fn:contains(currentUri, '/admin/product') ? ' active' : ''}"
                href="<c:url value='/admin/products'/>"><i class="fas fa-box"></i>Sản phẩm</a>
             <div class="nav-title" style="margin-top:22px">Tài khoản</div>
-            <a class="admin-nav-item${pageContext.request.servletPath.startsWith('/profile') ? ' active' : ''}"
+            <a class="admin-nav-item${fn:contains(currentUri, '/profile') ? ' active' : ''}"
                href="<c:url value='/profile'/>"><i class="fas fa-user-circle"></i>Hồ sơ cá nhân</a>
         </nav>
     </aside>
