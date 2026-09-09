@@ -1,0 +1,411 @@
+/* ============================================================
+   Custom overrides for Bootstrap 5 – SiteMesh Decorator Layout
+   ============================================================ */
+
+/* ---------- Sidebar ---------- */
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: 260px;
+    transition: margin 0.25s ease-out;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1030;
+    overflow-y: auto;
+}
+
+#page-content-wrapper {
+    margin-left: 260px;
+    transition: margin 0.25s ease-out;
+    min-height: 100vh;
+}
+
+/* Toggled state */
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: -260px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    margin-left: 0;
+}
+
+/* Sidebar brand */
+.sidebar-heading a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Sidebar nav items */
+#sidebar-wrapper .list-group-item {
+    border: none;
+    border-radius: 0;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+#sidebar-wrapper .list-group-item.nav-section-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    padding-bottom: 4px;
+    cursor: default;
+}
+
+#sidebar-wrapper .list-group-item-action:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+#sidebar-wrapper .list-group-item-action.active {
+    background-color: #0d6efd !important;
+    border-color: #0d6efd !important;
+    color: #fff !important;
+}
+
+/* ---------- Topbar ---------- */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
+
+/* ---------- Breadcrumb ---------- */
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+}
+
+/* ---------- Page Header ---------- */
+.page-header {
+    margin-bottom: 1.5rem;
+}
+
+.page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.page-header p {
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+/* ---------- Cards & Panels ---------- */
+.card {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.card-header {
+    font-weight: 600;
+    font-size: 0.95rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* ---------- Tables ---------- */
+.table th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #6c757d;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* Thumbnail in table */
+.thumb-img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.thumb-placeholder {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 1.2rem;
+}
+
+/* ---------- Action buttons in tables ---------- */
+.action-btn {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #475569;
+    text-decoration: none;
+    transition: all 0.15s;
+    font-size: 0.85rem;
+}
+
+.action-btn:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+    border-color: #cbd5e1;
+}
+
+.action-btn.danger {
+    color: #dc3545;
+    border: none;
+    background: none;
+}
+
+.action-btn.danger:hover {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+/* ---------- Alert overrides ---------- */
+.alert {
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* ---------- Form helpers ---------- */
+.form-help {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.required {
+    color: #dc3545;
+}
+
+/* Image preview box */
+.preview-box {
+    margin-top: 0.75rem;
+    display: none;
+    max-width: 200px;
+}
+
+.preview-box.visible {
+    display: block;
+}
+
+.preview-box img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Current image display */
+.current-image {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.current-image .thumb-img {
+    width: 80px;
+    height: 80px;
+}
+
+/* ---------- Empty state ---------- */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    display: block;
+    color: #94a3b8;
+}
+
+.empty-state h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #334155;
+}
+
+/* ---------- Dashboard stat cards ---------- */
+.stat-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.stat-card .view-link {
+    margin-top: auto;
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: #0d6efd;
+    font-weight: 500;
+}
+
+.stat-card .view-link:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Product card grid ---------- */
+.product-card-img {
+    height: 180px;
+    object-fit: cover;
+}
+
+.product-card-img-placeholder {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+    color: #94a3b8;
+    font-size: 2rem;
+}
+
+/* ---------- Profile page ---------- */
+.profile-header-bg {
+    background: linear-gradient(135deg, #0d6efd 0%, #1e40af 100%);
+    border-radius: 0.75rem 0.75rem 0 0;
+    padding: 2rem;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-header-bg::before {
+    content: '';
+    position: absolute;
+    top: -60%;
+    right: -10%;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.profile-avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 2rem;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Avatar upload section */
+.avatar-upload-section {
+    padding: 1.25rem;
+    background: #f8f9fa;
+    border: 2px dashed #cbd5e1;
+    border-radius: 0.5rem;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.avatar-upload-section:hover {
+    border-color: #93c5fd;
+    background: #eff6ff;
+}
+
+.avatar-upload-section.dragover {
+    border-color: #0d6efd;
+    background: #dbeafe;
+}
+
+.avatar-preview-box {
+    width: 100px;
+    height: 100px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 2px solid #e2e8f0;
+    background: #fff;
+}
+
+.avatar-preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-preview-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 2rem;
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+}
+
+/* ---------- Inline delete form ---------- */
+.inline-form {
+    display: inline;
+}
+
+.inline-form button.action-btn {
+    cursor: pointer;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: -260px;
+    }
+
+    #page-content-wrapper {
+        margin-left: 0;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        margin-left: 260px;
+    }
+}

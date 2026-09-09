@@ -8,65 +8,78 @@
     <title>Trang chủ - Product Management</title>
 </head>
 <body>
-    <div class="admin-page-header">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4 page-header">
         <div>
-            <p class="eyebrow">Dashboard</p>
+            <p class="text-muted text-uppercase small fw-semibold mb-1">Dashboard</p>
             <h1>Tổng quan hệ thống</h1>
-            <p>Quản lý danh mục, sản phẩm và theo dõi những sản phẩm vừa được thêm.</p>
+            <p class="text-muted">Quản lý danh mục, sản phẩm và theo dõi những sản phẩm vừa được thêm.</p>
         </div>
-        <a class="btn btn-primary" href="<c:url value='/admin/product/add'/>"><i class="fas fa-plus"></i>Thêm sản phẩm</a>
+        <a class="btn btn-primary" href="<c:url value='/admin/product/add'/>">
+            <i class="fas fa-plus me-1"></i>Thêm sản phẩm
+        </a>
     </div>
 
-    <div class="product-grid" style="margin-bottom:38px">
-        <article class="product-card">
-            <a class="product-card-link" href="<c:url value='/admin/categories'/>">
-                <div class="product-content">
-                    <span class="product-category">Quản trị</span>
-                    <h2 class="product-name"><i class="fas fa-tags" style="color:#2563eb;margin-right:8px"></i>Quản lý danh mục</h2>
-                    <p style="color:#64748b">Tạo, cập nhật và sắp xếp các danh mục sản phẩm.</p>
-                    <span class="view-link" style="margin-top:auto">Mở danh mục <i class="fas fa-arrow-right"></i></span>
+    <!-- Stat Cards -->
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+        <div class="col">
+            <div class="card h-100 stat-card">
+                <div class="card-body">
+                    <span class="badge bg-primary-subtle text-primary mb-2">Quản trị</span>
+                    <h5 class="card-title"><i class="fas fa-tags text-primary me-2"></i>Quản lý danh mục</h5>
+                    <p class="card-text text-muted">Tạo, cập nhật và sắp xếp các danh mục sản phẩm.</p>
+                    <a class="view-link" href="<c:url value='/admin/categories'/>">
+                        Mở danh mục <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
                 </div>
-            </a>
-        </article>
-        <article class="product-card">
-            <a class="product-card-link" href="<c:url value='/admin/products'/>">
-                <div class="product-content">
-                    <span class="product-category">Quản trị</span>
-                    <h2 class="product-name"><i class="fas fa-box" style="color:#2563eb;margin-right:8px"></i>Quản lý sản phẩm</h2>
-                    <p style="color:#64748b">Thêm, sửa, xóa và kiểm soát trạng thái sản phẩm.</p>
-                    <span class="view-link" style="margin-top:auto">Mở sản phẩm <i class="fas fa-arrow-right"></i></span>
-                </div>
-            </a>
-        </article>
-        <article class="product-card">
-            <a class="product-card-link" href="<c:url value='/product'/>">
-                <div class="product-content">
-                    <span class="product-category">Khách hàng</span>
-                    <h2 class="product-name"><i class="fas fa-store" style="color:#2563eb;margin-right:8px"></i>Xem cửa hàng</h2>
-                    <p style="color:#64748b">Duyệt toàn bộ sản phẩm theo từng trang.</p>
-                    <span class="view-link" style="margin-top:auto">Đến cửa hàng <i class="fas fa-arrow-right"></i></span>
-                </div>
-            </a>
-        </article>
-    </div>
-
-    <section aria-labelledby="newest-products-title">
-        <div class="section-heading">
-            <div>
-                <h2 id="newest-products-title">10 sản phẩm mới nhất</h2>
-                <p>Các sản phẩm được sắp xếp theo thời gian tạo gần nhất.</p>
             </div>
-            <a class="btn btn-secondary" href="<c:url value='/product'/>">Xem tất cả <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="col">
+            <div class="card h-100 stat-card">
+                <div class="card-body">
+                    <span class="badge bg-primary-subtle text-primary mb-2">Quản trị</span>
+                    <h5 class="card-title"><i class="fas fa-box text-primary me-2"></i>Quản lý sản phẩm</h5>
+                    <p class="card-text text-muted">Thêm, sửa, xóa và kiểm soát trạng thái sản phẩm.</p>
+                    <a class="view-link" href="<c:url value='/admin/products'/>">
+                        Mở sản phẩm <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 stat-card">
+                <div class="card-body">
+                    <span class="badge bg-success-subtle text-success mb-2">Khách hàng</span>
+                    <h5 class="card-title"><i class="fas fa-store text-primary me-2"></i>Xem cửa hàng</h5>
+                    <p class="card-text text-muted">Duyệt toàn bộ sản phẩm theo từng trang.</p>
+                    <a class="view-link" href="<c:url value='/product'/>">
+                        Đến cửa hàng <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newest Products Section -->
+    <section aria-labelledby="newest-products-title">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <div>
+                <h2 id="newest-products-title" class="h5 fw-bold">10 sản phẩm mới nhất</h2>
+                <p class="text-muted small mb-0">Các sản phẩm được sắp xếp theo thời gian tạo gần nhất.</p>
+            </div>
+            <a class="btn btn-outline-secondary btn-sm" href="<c:url value='/product'/>">
+                Xem tất cả <i class="fas fa-arrow-right ms-1"></i>
+            </a>
         </div>
 
-        <div class="product-grid">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
             <c:choose>
                 <c:when test="${not empty newestProducts}">
                     <c:forEach items="${newestProducts}" var="item">
                         <c:url value="/product/detail" var="detailUrl"><c:param name="id" value="${item.productId}"/></c:url>
-                        <article class="product-card">
-                            <a class="product-card-link" href="<c:out value='${detailUrl}'/>">
-                                <div class="product-image">
+                        <div class="col">
+                            <div class="card h-100">
+                                <a href="<c:out value='${detailUrl}'/>" class="text-decoration-none text-dark">
                                     <c:choose>
                                         <c:when test="${not empty item.images}">
                                             <c:choose>
@@ -77,28 +90,39 @@
                                                     <c:url value="/image" var="productImageUrl"><c:param name="fname" value="${item.images}"/></c:url>
                                                 </c:otherwise>
                                             </c:choose>
-                                            <img src="<c:out value='${productImageUrl}'/>" alt="Ảnh sản phẩm: <c:out value='${item.productName}'/>" loading="lazy">
+                                            <img src="<c:out value='${productImageUrl}'/>"
+                                                 class="card-img-top product-card-img"
+                                                 alt="Ảnh sản phẩm: <c:out value='${item.productName}'/>" loading="lazy">
                                         </c:when>
-                                        <c:otherwise><div class="image-placeholder"><i class="far fa-image"></i></div></c:otherwise>
+                                        <c:otherwise>
+                                            <div class="product-card-img-placeholder">
+                                                <i class="far fa-image"></i>
+                                            </div>
+                                        </c:otherwise>
                                     </c:choose>
-                                </div>
-                                <div class="product-content">
-                                    <span class="product-category"><c:out value="${item.category.categoryname}" default="Chưa phân loại"/></span>
-                                    <h3 class="product-name"><c:out value="${item.productName}"/></h3>
-                                    <div class="product-footer">
-                                        <span class="product-price"><fmt:formatNumber value="${item.price}" type="number" maxFractionDigits="2"/> ₫</span>
-                                        <span class="view-link">Chi tiết <i class="fas fa-arrow-right"></i></span>
+                                    <div class="card-body">
+                                        <span class="badge bg-light text-muted mb-1"><c:out value="${item.category.categoryname}" default="Chưa phân loại"/></span>
+                                        <h6 class="card-title mb-2"><c:out value="${item.productName}"/></h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold text-primary">
+                                                <fmt:formatNumber value="${item.price}" type="number" maxFractionDigits="2"/> ₫
+                                            </span>
+                                            <span class="text-muted small">Chi tiết <i class="fas fa-arrow-right"></i></span>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        </article>
+                                </a>
+                            </div>
+                        </div>
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
-                    <div class="empty-state wide">
-                        <i class="fas fa-box-open"></i><h3>Chưa có sản phẩm</h3>
-                        <p>Hãy thêm sản phẩm đầu tiên để hiển thị tại đây.</p>
-                        <a class="btn btn-primary" href="<c:url value='/admin/product/add'/>">Thêm sản phẩm</a>
+                    <div class="col-12">
+                        <div class="empty-state">
+                            <i class="fas fa-box-open"></i>
+                            <h3>Chưa có sản phẩm</h3>
+                            <p>Hãy thêm sản phẩm đầu tiên để hiển thị tại đây.</p>
+                            <a class="btn btn-primary" href="<c:url value='/admin/product/add'/>">Thêm sản phẩm</a>
+                        </div>
                     </div>
                 </c:otherwise>
             </c:choose>

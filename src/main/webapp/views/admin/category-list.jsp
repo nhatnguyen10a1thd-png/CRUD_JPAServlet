@@ -7,27 +7,31 @@
     <title>Quản lý danh mục - Product Management</title>
 </head>
 <body>
-<div class="breadcrumbs">
-    <a href="<c:url value='/home'/>">Trang chủ</a>
-    <i class="fas fa-chevron-right"></i>
-    <span>Danh mục</span>
-</div>
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="<c:url value='/home'/>">Trang chủ</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Danh mục</li>
+    </ol>
+</nav>
 
-<div class="admin-page-header">
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4 page-header">
     <div>
         <h1>Quản lý danh mục</h1>
-        <p>Thêm, chỉnh sửa và kiểm soát các danh mục sản phẩm trong hệ thống.</p>
+        <p class="text-muted mb-0">Thêm, chỉnh sửa và kiểm soát các danh mục sản phẩm trong hệ thống.</p>
     </div>
     <a class="btn btn-primary" href="<c:url value='/admin/category/add'/>">
-        <i class="fas fa-plus"></i>Thêm danh mục
+        <i class="fas fa-plus me-1"></i>Thêm danh mục
     </a>
 </div>
 
-<section class="panel" aria-labelledby="all-categories-heading">
-    <div class="panel-heading" id="all-categories-heading">Tất cả danh mục</div>
-    <div class="table-wrap">
-        <table class="data-table">
-            <thead>
+<!-- Table Card -->
+<div class="card">
+    <div class="card-header">Tất cả danh mục</div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
             <tr>
                 <th>#</th>
                 <th>Ảnh</th>
@@ -43,55 +47,53 @@
                         <tr>
                             <td><c:out value="${row.index + 1}"/></td>
                             <td>
-                                <div class="thumb">
-                                    <c:choose>
-                                        <c:when test="${not empty cate.images}">
-                                            <c:choose>
-                                                <c:when test="${fn:startsWith(fn:toLowerCase(cate.images), 'http://') or fn:startsWith(fn:toLowerCase(cate.images), 'https://')}">
-                                                    <c:url value="${cate.images}" var="categoryImageUrl"/>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <c:url value="/image" var="categoryImageUrl">
-                                                        <c:param name="fname" value="${cate.images}"/>
-                                                    </c:url>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <img src="<c:out value='${categoryImageUrl}'/>"
-                                                 alt="Ảnh danh mục: <c:out value='${cate.categoryname}'/>"
-                                                 loading="lazy">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="image-placeholder"><i class="far fa-image"></i></div>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
+                                <c:choose>
+                                    <c:when test="${not empty cate.images}">
+                                        <c:choose>
+                                            <c:when test="${fn:startsWith(fn:toLowerCase(cate.images), 'http://') or fn:startsWith(fn:toLowerCase(cate.images), 'https://')}">
+                                                <c:url value="${cate.images}" var="categoryImageUrl"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:url value="/image" var="categoryImageUrl">
+                                                    <c:param name="fname" value="${cate.images}"/>
+                                                </c:url>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <img src="<c:out value='${categoryImageUrl}'/>"
+                                             alt="Ảnh danh mục: <c:out value='${cate.categoryname}'/>"
+                                             class="thumb-img" loading="lazy">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="thumb-placeholder"><i class="far fa-image"></i></div>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
-                            <td class="truncate"><strong><c:out value="${cate.categoryname}"/></strong></td>
+                            <td><strong><c:out value="${cate.categoryname}"/></strong></td>
                             <td>
                                 <c:choose>
                                     <c:when test="${cate.status == 1}">
-                                        <span class="badge badge-success">Đang hoạt động</span>
+                                        <span class="badge bg-success">Đang hoạt động</span>
                                     </c:when>
                                     <c:otherwise>
-                                        <span class="badge badge-danger">Đã khóa</span>
+                                        <span class="badge bg-danger">Đã khóa</span>
                                     </c:otherwise>
                                 </c:choose>
                             </td>
                             <td>
-                                <div class="actions">
+                                <div class="d-flex gap-1">
                                     <c:url value="/admin/category/edit" var="editUrl">
                                         <c:param name="id" value="${cate.categoryId}"/>
                                     </c:url>
                                     <c:url value="/admin/category/delete" var="deleteUrl">
                                         <c:param name="id" value="${cate.categoryId}"/>
                                     </c:url>
-                                    <a class="icon-action" href="<c:out value='${editUrl}'/>"
-                                       aria-label="Sửa danh mục" title="Sửa">
+                                    <a class="action-btn" href="<c:out value='${editUrl}'/>"
+                                       title="Sửa" aria-label="Sửa danh mục">
                                         <i class="fas fa-pen"></i>
                                     </a>
-                                    <a class="icon-action danger" href="<c:out value='${deleteUrl}'/>"
+                                    <a class="action-btn danger" href="<c:out value='${deleteUrl}'/>"
                                        onclick="return confirm('Bạn có chắc muốn xóa danh mục này?');"
-                                       aria-label="Xóa danh mục" title="Xóa">
+                                       title="Xóa" aria-label="Xóa danh mục">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </div>
@@ -115,6 +117,6 @@
             </tbody>
         </table>
     </div>
-</section>
+</div>
 </body>
 </html>
