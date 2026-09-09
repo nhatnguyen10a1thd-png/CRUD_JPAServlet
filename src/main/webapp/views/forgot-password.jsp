@@ -29,14 +29,15 @@
             <div class="small">Chúng tôi sẽ gửi mã OTP 6 chữ số đến email đăng ký của bạn để xác nhận danh tính trước khi đặt lại mật khẩu.</div>
         </div>
 
-        <form action="<c:url value='/forgot-password'/>" method="post" autocomplete="off">
+        <form action="<c:url value='/forgot-password'/>" method="post" autocomplete="off" class="needs-validation" novalidate>
             <div class="mb-4">
                 <label for="email" class="form-label fw-semibold">Địa chỉ Email</label>
                 <div class="input-icon-wrapper">
                     <input type="email" name="email" id="email" class="form-control"
-                           placeholder="Nhập email đã đăng ký" value="${email}" required autofocus>
+                           placeholder="Nhập email đã đăng ký" value="<c:out value='${email}'/>" maxlength="100" required autofocus>
                     <i class="fas fa-envelope input-icon"></i>
                 </div>
+                <div class="invalid-feedback">Vui lòng nhập một địa chỉ email hợp lệ.</div>
             </div>
 
             <button type="submit" class="btn btn-warning text-white w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2" id="btnSubmit">

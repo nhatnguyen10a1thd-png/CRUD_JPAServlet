@@ -26,6 +26,20 @@
     </a>
 </div>
 
+<!-- Flash Messages -->
+<c:set var="successMessage" value="${not empty requestScope.flashSuccess ? requestScope.flashSuccess : sessionScope.flashSuccess}"/>
+<c:set var="errorMessage" value="${not empty requestScope.flashError ? requestScope.flashError : sessionScope.flashError}"/>
+<c:if test="${not empty successMessage}">
+    <div class="alert alert-success d-flex align-items-center" role="status">
+        <i class="fas fa-circle-check me-2"></i> <c:out value="${successMessage}"/>
+    </div>
+</c:if>
+<c:if test="${not empty errorMessage}">
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+        <i class="fas fa-circle-exclamation me-2"></i> <c:out value="${errorMessage}"/>
+    </div>
+</c:if>
+
 <!-- Table Card -->
 <div class="card">
     <div class="card-header">Tất cả danh mục</div>

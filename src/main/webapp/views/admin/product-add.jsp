@@ -25,7 +25,19 @@
 </div>
 
 <!-- Error Alerts -->
-<c:if test="${not empty error}">
+<c:if test="${not empty errors}">
+    <div class="alert alert-danger" role="alert">
+        <div class="d-flex align-items-center mb-1 fw-semibold">
+            <i class="fas fa-circle-exclamation me-2"></i> Vui lòng kiểm tra các lỗi sau:
+        </div>
+        <ul class="mb-0 ps-3">
+            <c:forEach var="err" items="${errors}">
+                <li><c:out value="${err}"/></li>
+            </c:forEach>
+        </ul>
+    </div>
+</c:if>
+<c:if test="${empty errors and not empty error}">
     <div class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="fas fa-circle-exclamation me-2"></i> <c:out value="${error}"/>
     </div>
@@ -41,26 +53,30 @@
 <div class="card">
     <div class="card-header">Thông tin sản phẩm</div>
     <div class="card-body">
-        <form action="<c:url value='/admin/product/insert'/>" method="post" enctype="multipart/form-data">
+        <form action="<c:url value='/admin/product/insert'/>" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
             <div class="row g-3">
                 <!-- Tên sản phẩm -->
                 <div class="col-md-6">
-                    <label class="form-label" for="productName">Tên sản phẩm <span class="required">*</span></label>
+                    <label class="form-label" for="productName">Tên sản phẩm <span class="required text-danger">*</span></label>
                     <input class="form-control" id="productName" name="productName" type="text"
-                           maxlength="255" required autofocus value="<c:out value='${draft.productName}'/>">
+                           maxlength="255" required autofocus value="<c:out value='${draft.productName}'/>"
+                           placeholder="Nhập tên sản phẩm">
+                    <div class="invalid-feedback">Vui lòng nhập tên sản phẩm (tối đa 255 ký tự).</div>
                 </div>
 
                 <!-- Giá bán -->
                 <div class="col-md-6">
-                    <label class="form-label" for="price">Giá bán <span class="required">*</span></label>
+                    <label class="form-label" for="price">Giá bán (VNĐ) <span class="required text-danger">*</span></label>
                     <c:set var="priceValue" value="${not empty submittedPrice ? submittedPrice : draft.price}"/>
                     <input class="form-control" id="price" name="price" type="number" min="0" step="0.01"
-                           required inputmode="decimal" value="<c:out value='${priceValue}'/>">
+                           required inputmode="decimal" value="<c:out value='${priceValue}'/>"
+                           placeholder="0.00">
+                    <div class="invalid-feedback">Vui lòng nhập giá bán hợp lệ (không âm, tối đa 2 số thập phân).</div>
                 </div>
 
                 <!-- Danh mục -->
                 <div class="col-md-6">
-                    <label class="form-label" for="categoryId">Danh mục <span class="required">*</span></label>
+                    <label class="form-label" for="categoryId">Danh mục <span class="required text-danger">*</span></label>
                     <select class="form-select" id="categoryId" name="categoryId" required>
                         <option value="">-- Chọn danh mục --</option>
                         <c:forEach items="${categories}" var="cate">
@@ -74,11 +90,12 @@
                             </c:choose>
                         </c:forEach>
                     </select>
+                    <div class="invalid-feedback">Vui lòng chọn danh mục sản phẩm.</div>
                 </div>
 
                 <!-- Trạng thái -->
                 <div class="col-md-6">
-                    <label class="form-label" for="status">Trạng thái <span class="required">*</span></label>
+                    <label class="form-label" for="status">Trạng thái <span class="required text-danger">*</span></label>
                     <select class="form-select" id="status" name="status" required>
                         <c:choose>
                             <c:when test="${empty formProduct or draft.status == 1}">
@@ -91,6 +108,7 @@
                             </c:otherwise>
                         </c:choose>
                     </select>
+                    <div class="invalid-feedback">Vui lòng chọn trạng thái.</div>
                 </div>
 
                 <!-- Mô tả -->
@@ -98,6 +116,7 @@
                     <label class="form-label" for="description">Mô tả</label>
                     <textarea class="form-control" id="description" name="description" rows="4"
                               maxlength="4000" placeholder="Mô tả chi tiết sản phẩm..."><c:out value="${draft.description}"/></textarea>
+                    <div class="invalid-feedback">Mô tả không được vượt quá 4000 ký tự.</div>
                 </div>
 
                 <!-- Đường dẫn ảnh -->
@@ -107,7 +126,8 @@
                     <c:set var="imageUrlValue" value="${not empty submittedImageUrl ? submittedImageUrl : (draftIsRemote ? draft.images : '')}"/>
                     <input class="form-control" id="images" name="images" type="url" maxlength="255"
                            placeholder="https://example.com/product.jpg" value="<c:out value='${imageUrlValue}'/>">
-                    <span class="form-help">Có thể nhập URL HTTP/HTTPS hoặc tải tệp ảnh ở ô bên cạnh.</span>
+                    <span class="form-help text-muted small">Có thể nhập URL HTTP/HTTPS hoặc tải tệp ảnh ở ô bên cạnh.</span>
+                    <div class="invalid-feedback">URL ảnh không hợp lệ (phải bắt đầu bằng http:// hoặc https://).</div>
                 </div>
 
                 <!-- Tải ảnh lên -->
@@ -115,8 +135,9 @@
                     <label class="form-label" for="images1">Tải ảnh lên</label>
                     <input class="form-control" id="images1" name="images1" type="file"
                            accept="image/png,image/jpeg,image/gif" onchange="previewUpload(this)">
-                    <span class="form-help">PNG, JPG hoặc GIF. Nếu chọn tệp, tệp sẽ được ưu tiên.</span>
-                    <div class="preview-box" id="imagePreview"><img alt="Xem trước ảnh được chọn"></div>
+                    <span class="form-help text-muted small">PNG, JPG hoặc GIF (tối đa 5 MB). Nếu chọn tệp, tệp sẽ được ưu tiên.</span>
+                    <div class="invalid-feedback">Chỉ chấp nhận tệp ảnh JPG, PNG, GIF và không vượt quá 5 MB.</div>
+                    <div class="preview-box mt-2" id="imagePreview"><img alt="Xem trước ảnh được chọn" class="img-thumbnail" style="max-height: 120px;"></div>
                 </div>
             </div>
 

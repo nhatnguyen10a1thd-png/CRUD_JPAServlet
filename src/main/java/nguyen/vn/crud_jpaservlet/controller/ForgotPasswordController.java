@@ -71,20 +71,30 @@ public class ForgotPasswordController extends HttpServlet {
         }
     }
 
+    private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+
     /**
      * Xử lý gửi OTP quên mật khẩu
      */
     private void handleForgotPassword(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
+        String trimmedEmail = email != null ? email.trim() : "";
 
-        if (email == null || email.trim().isEmpty()) {
+        if (trimmedEmail.isEmpty()) {
             req.setAttribute("error", "Vui lòng nhập địa chỉ email!");
             req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
             return;
         }
 
+        if (!trimmedEmail.matches(EMAIL_PATTERN)) {
+            req.setAttribute("error", "Địa chỉ email không đúng định dạng!");
+            req.setAttribute("email", trimmedEmail);
+            req.getRequestDispatcher("/views/forgot-password.jsp").forward(req, resp);
+            return;
+        }
+
         // Kiểm tra email có tồn tại không
-        User user = userService.findByEmail(email.trim());
+        User user = userService.findByEmail(trimmedEmail);
         if (user == null) {
             req.setAttribute("error", "Email không tồn tại trong hệ thống!");
             req.setAttribute("email", email);
@@ -211,8 +221,14 @@ public class ForgotPasswordController extends HttpServlet {
         String username = (String) session.getAttribute("resetUsername");
 
         // Validate
-        if (newPassword == null || newPassword.trim().isEmpty()) {
+        if (newPassword == null || newPassword.isEmpty()) {
             req.setAttribute("error", "Vui lòng nhập mật khẩu mới!");
+            req.getRequestDispatcher("/views/reset-password.jsp").forward(req, resp);
+            return;
+        }
+
+        if (newPassword.length() < 6) {
+            req.setAttribute("error", "Mật khẩu mới phải có ít nhất 6 ký tự!");
             req.getRequestDispatcher("/views/reset-password.jsp").forward(req, resp);
             return;
         }

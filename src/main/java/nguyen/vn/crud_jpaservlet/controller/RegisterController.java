@@ -62,6 +62,10 @@ public class RegisterController extends HttpServlet {
         }
     }
 
+    private static final String USERNAME_PATTERN = "^[a-zA-Z0-9_]{3,50}$";
+    private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+    private static final String PHONE_PATTERN = "^[0-9]{10,11}$";
+
     /**
      * Xử lý đăng ký tài khoản mới
      */
@@ -73,27 +77,62 @@ public class RegisterController extends HttpServlet {
         String password = req.getParameter("password");
         String confirmPassword = req.getParameter("confirmPassword");
 
-        // Validate các trường bắt buộc
-        if (username == null || username.trim().isEmpty()
-                || fullname == null || fullname.trim().isEmpty()
-                || email == null || email.trim().isEmpty()
-                || password == null || password.trim().isEmpty()) {
-            req.setAttribute("error", "Vui lòng điền đầy đủ thông tin!");
-            req.setAttribute("username", username);
-            req.setAttribute("fullname", fullname);
-            req.setAttribute("email", email);
-            req.setAttribute("phone", phone);
-            req.getRequestDispatcher("/views/register.jsp").forward(req, resp);
-            return;
+        String trimmedUsername = username != null ? username.trim() : "";
+        String trimmedFullname = fullname != null ? fullname.trim() : "";
+        String trimmedEmail = email != null ? email.trim() : "";
+        String trimmedPhone = phone != null ? phone.trim() : "";
+
+        java.util.List<String> errors = new java.util.ArrayList<>();
+
+        // Validate username
+        if (trimmedUsername.isEmpty()) {
+            errors.add("Tên đăng nhập không được để trống.");
+        } else if (!trimmedUsername.matches(USERNAME_PATTERN)) {
+            errors.add("Tên đăng nhập phải từ 3 đến 50 ký tự, chỉ gồm chữ cái, số và dấu gạch dưới (_).");
         }
 
-        // Validate mật khẩu khớp nhau
-        if (!password.equals(confirmPassword)) {
-            req.setAttribute("error", "Mật khẩu xác nhận không khớp!");
-            req.setAttribute("username", username);
-            req.setAttribute("fullname", fullname);
-            req.setAttribute("email", email);
-            req.setAttribute("phone", phone);
+        // Validate fullname
+        if (trimmedFullname.isEmpty()) {
+            errors.add("Họ và tên không được để trống.");
+        } else if (trimmedFullname.length() > 100) {
+            errors.add("Họ và tên không được vượt quá 100 ký tự.");
+        }
+
+        // Validate email
+        if (trimmedEmail.isEmpty()) {
+            errors.add("Email không được để trống.");
+        } else if (trimmedEmail.length() > 100) {
+            errors.add("Email không được vượt quá 100 ký tự.");
+        } else if (!trimmedEmail.matches(EMAIL_PATTERN)) {
+            errors.add("Địa chỉ email không đúng định dạng.");
+        }
+
+        // Validate phone (optional)
+        if (!trimmedPhone.isEmpty() && !trimmedPhone.matches(PHONE_PATTERN)) {
+            errors.add("Số điện thoại phải gồm 10 đến 11 chữ số.");
+        }
+
+        // Validate password
+        if (password == null || password.isEmpty()) {
+            errors.add("Mật khẩu không được để trống.");
+        } else if (password.length() < 6) {
+            errors.add("Mật khẩu phải có ít nhất 6 ký tự.");
+        }
+
+        // Validate confirm password
+        if (confirmPassword == null || confirmPassword.isEmpty()) {
+            errors.add("Vui lòng xác nhận mật khẩu.");
+        } else if (password != null && !password.equals(confirmPassword)) {
+            errors.add("Mật khẩu xác nhận không khớp.");
+        }
+
+        if (!errors.isEmpty()) {
+            req.setAttribute("errors", errors);
+            req.setAttribute("error", String.join(" ", errors));
+            req.setAttribute("username", trimmedUsername);
+            req.setAttribute("fullname", trimmedFullname);
+            req.setAttribute("email", trimmedEmail);
+            req.setAttribute("phone", trimmedPhone);
             req.getRequestDispatcher("/views/register.jsp").forward(req, resp);
             return;
         }

@@ -55,18 +55,26 @@ public class LoginController extends HttpServlet {
 
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        String trimmedUsername = username != null ? username.trim() : null;
 
         // Validate input
-        if (username == null || username.trim().isEmpty()
-                || password == null || password.trim().isEmpty()) {
+        if (trimmedUsername == null || trimmedUsername.isEmpty()
+                || password == null || password.isEmpty()) {
             req.setAttribute("error", "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!");
-            req.setAttribute("username", username);
+            req.setAttribute("username", trimmedUsername != null ? trimmedUsername : "");
+            req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+            return;
+        }
+
+        if (trimmedUsername.length() > 50) {
+            req.setAttribute("error", "Tên đăng nhập không được vượt quá 50 ký tự!");
+            req.setAttribute("username", trimmedUsername);
             req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
             return;
         }
 
         try {
-            User user = userService.login(username.trim(), password);
+            User user = userService.login(trimmedUsername, password);
             if (user != null) {
                 // Đăng nhập thành công
                 HttpSession session = req.getSession();

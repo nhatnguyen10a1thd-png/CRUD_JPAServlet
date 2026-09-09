@@ -23,18 +23,19 @@
             </div>
         </c:if>
 
-        <form action="<c:url value='/reset-password'/>" method="post" autocomplete="off" id="resetForm">
+        <form action="<c:url value='/reset-password'/>" method="post" autocomplete="off" id="resetForm" class="needs-validation" novalidate>
             <!-- New Password -->
             <div class="mb-3">
                 <label for="newPassword" class="form-label fw-semibold">Mật khẩu mới <span class="text-danger">*</span></label>
                 <div class="input-icon-wrapper">
                     <input type="password" name="newPassword" id="newPassword" class="form-control"
-                           placeholder="Nhập mật khẩu mới" required autofocus>
+                           placeholder="Nhập mật khẩu mới" minlength="6" required autofocus>
                     <i class="fas fa-lock input-icon"></i>
                     <button type="button" class="toggle-password" onclick="togglePass('newPassword', this)">
                         <i class="far fa-eye"></i>
                     </button>
                 </div>
+                <div class="invalid-feedback">Mật khẩu mới phải có ít nhất 6 ký tự.</div>
                 <div class="form-text text-muted small mt-1">
                     <i class="fas fa-info-circle me-1"></i>Mật khẩu nên có ít nhất 6 ký tự
                 </div>
@@ -45,12 +46,13 @@
                 <label for="confirmPassword" class="form-label fw-semibold">Xác nhận mật khẩu <span class="text-danger">*</span></label>
                 <div class="input-icon-wrapper">
                     <input type="password" name="confirmPassword" id="confirmPassword" class="form-control"
-                           placeholder="Nhập lại mật khẩu mới" required>
+                           placeholder="Nhập lại mật khẩu mới" data-match="#newPassword" required>
                     <i class="fas fa-lock input-icon"></i>
                     <button type="button" class="toggle-password" onclick="togglePass('confirmPassword', this)">
                         <i class="far fa-eye"></i>
                     </button>
                 </div>
+                <div class="invalid-feedback">Mật khẩu xác nhận không khớp.</div>
             </div>
 
             <button type="submit" class="btn btn-warning text-white w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2" id="btnReset">

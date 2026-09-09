@@ -66,14 +66,26 @@
                     </c:if>
 
                     <%-- Error messages --%>
-                    <c:if test="${not empty error}">
+                    <c:if test="${not empty errors}">
+                        <div class="alert alert-danger" role="alert">
+                            <div class="d-flex align-items-center mb-1 fw-semibold">
+                                <i class="fas fa-exclamation-circle me-2"></i> Vui lòng kiểm tra các lỗi sau:
+                            </div>
+                            <ul class="mb-0 ps-3">
+                                <c:forEach var="err" items="${errors}">
+                                    <li><c:out value="${err}"/></li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </c:if>
+                    <c:if test="${empty errors and not empty error}">
                         <div class="alert alert-danger d-flex align-items-center" role="alert">
                             <i class="fas fa-exclamation-circle me-2"></i>
                             <span><c:out value="${error}"/></span>
                         </div>
                     </c:if>
 
-                    <form action="<c:url value='/profile/update'/>" method="post" enctype="multipart/form-data" id="profileForm">
+                    <form action="<c:url value='/profile/update'/>" method="post" enctype="multipart/form-data" id="profileForm" class="needs-validation" novalidate>
 
                         <div class="row g-3">
 
@@ -97,13 +109,14 @@
 
                             <%-- Fullname --%>
                             <div class="col-md-6">
-                                <label class="form-label" for="fullname">Họ và tên <span class="required">*</span></label>
+                                <label class="form-label" for="fullname">Họ và tên <span class="required text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     <input type="text" class="form-control" id="fullname" name="fullname"
                                            value="<c:out value='${profileUser.fullname}'/>"
                                            placeholder="Nhập họ và tên" required maxlength="100">
                                 </div>
+                                <div class="invalid-feedback">Vui lòng nhập họ và tên (tối đa 100 ký tự).</div>
                             </div>
 
                             <%-- Phone --%>
@@ -116,6 +129,7 @@
                                            placeholder="Nhập số điện thoại" maxlength="11"
                                            pattern="[0-9]{10,11}">
                                 </div>
+                                <div class="invalid-feedback">Số điện thoại phải gồm 10 đến 11 chữ số.</div>
                             </div>
 
                             <%-- Avatar Upload --%>
@@ -150,6 +164,7 @@
                                             </label>
                                             <input type="file" id="avatarInput" name="avatar" class="d-none"
                                                    accept="image/jpeg,image/png,image/gif">
+                                            <div class="invalid-feedback">Chỉ chấp nhận tệp ảnh JPG, PNG, GIF và không vượt quá 5 MB.</div>
                                         </div>
                                     </div>
                                 </div>

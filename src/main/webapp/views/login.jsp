@@ -32,15 +32,16 @@
             </div>
         </c:if>
 
-        <form action="<c:url value='/login'/>" method="post" autocomplete="off">
+        <form action="<c:url value='/login'/>" method="post" autocomplete="off" class="needs-validation" novalidate>
             <!-- Username -->
             <div class="mb-3">
                 <label for="username" class="form-label fw-semibold">Tên đăng nhập</label>
                 <div class="input-icon-wrapper">
                     <input type="text" name="username" id="username" class="form-control"
-                           placeholder="Nhập tên đăng nhập" value="${username}" required autofocus>
+                           maxlength="50" placeholder="Nhập tên đăng nhập" value="<c:out value='${username}'/>" required autofocus>
                     <i class="fas fa-user input-icon"></i>
                 </div>
+                <div class="invalid-feedback">Vui lòng nhập tên đăng nhập (tối đa 50 ký tự).</div>
             </div>
 
             <!-- Password -->
@@ -54,6 +55,7 @@
                         <i class="far fa-eye" id="togglePasswordIcon"></i>
                     </button>
                 </div>
+                <div class="invalid-feedback">Vui lòng nhập mật khẩu.</div>
             </div>
 
             <!-- Options -->

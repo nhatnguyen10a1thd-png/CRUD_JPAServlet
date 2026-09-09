@@ -22,8 +22,20 @@
     <p class="text-muted mb-0">Cập nhật thông tin danh mục #<c:out value="${cate.categoryId}"/>.</p>
 </div>
 
-<!-- Error Alert -->
-<c:if test="${not empty error}">
+<!-- Errors Alert -->
+<c:if test="${not empty errors}">
+    <div class="alert alert-danger" role="alert">
+        <div class="d-flex align-items-center mb-1 fw-semibold">
+            <i class="fas fa-circle-exclamation me-2"></i> Vui lòng kiểm tra các lỗi sau:
+        </div>
+        <ul class="mb-0 ps-3">
+            <c:forEach var="err" items="${errors}">
+                <li><c:out value="${err}"/></li>
+            </c:forEach>
+        </ul>
+    </div>
+</c:if>
+<c:if test="${empty errors and not empty error}">
     <div class="alert alert-danger d-flex align-items-center" role="alert">
         <i class="fas fa-circle-exclamation me-2"></i> <c:out value="${error}"/>
     </div>
@@ -33,17 +45,18 @@
 <div class="card">
     <div class="card-header">Thông tin danh mục</div>
     <div class="card-body">
-        <form action="<c:url value='/admin/category/update'/>" method="post" enctype="multipart/form-data">
+        <form action="<c:url value='/admin/category/update'/>" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
             <input type="hidden" name="categoryid" value="<c:out value='${cate.categoryId}'/>">
 
             <div class="row g-3">
                 <!-- Tên danh mục -->
                 <div class="col-12">
                     <label class="form-label" for="categoryname">
-                        Tên danh mục <span class="required">*</span>
+                        Tên danh mục <span class="required text-danger">*</span>
                     </label>
                     <input class="form-control" id="categoryname" name="categoryname" type="text"
                            maxlength="255" required autofocus value="<c:out value='${cate.categoryname}'/>">
+                    <div class="invalid-feedback">Vui lòng nhập tên danh mục (tối đa 255 ký tự).</div>
                 </div>
 
                 <!-- Đường dẫn ảnh mới -->
@@ -53,7 +66,8 @@
                     <input class="form-control" id="images" name="images" type="url" maxlength="255"
                            value="<c:out value='${currentIsRemote ? cate.images : ""}'/>"
                            placeholder="https://example.com/image.jpg">
-                    <span class="form-help">Để trống nếu muốn giữ ảnh hiện tại.</span>
+                    <span class="form-help text-muted small">Để trống nếu muốn giữ ảnh hiện tại.</span>
+                    <div class="invalid-feedback">URL ảnh không hợp lệ (phải bắt đầu bằng http:// hoặc https://).</div>
                 </div>
 
                 <!-- Tải ảnh mới lên -->
@@ -61,25 +75,19 @@
                     <label class="form-label" for="images1">Tải ảnh mới lên</label>
                     <input class="form-control" id="images1" name="images1" type="file"
                            accept="image/png,image/jpeg,image/gif" onchange="previewUpload(this)">
-                    <span class="form-help">Tệp tải lên được ưu tiên hơn đường dẫn ảnh.</span>
-                    <div class="preview-box" id="imagePreview"><img alt="Xem trước ảnh mới"></div>
+                    <span class="form-help text-muted small">Tệp tải lên được ưu tiên hơn đường dẫn ảnh (tối đa 5 MB).</span>
+                    <div class="invalid-feedback">Chỉ chấp nhận tệp ảnh JPG, PNG, GIF và không vượt quá 5 MB.</div>
+                    <div class="preview-box mt-2" id="imagePreview"><img alt="Xem trước ảnh mới" class="img-thumbnail" style="max-height: 120px;"></div>
                 </div>
 
                 <!-- Trạng thái -->
                 <div class="col-md-6">
-                    <label class="form-label" for="status">Trạng thái <span class="required">*</span></label>
+                    <label class="form-label" for="status">Trạng thái <span class="required text-danger">*</span></label>
                     <select class="form-select" id="status" name="status" required>
-                        <c:choose>
-                            <c:when test="${cate.status == 1}">
-                                <option value="1" selected>Đang hoạt động</option>
-                                <option value="0">Đã khóa</option>
-                            </c:when>
-                            <c:otherwise>
-                                <option value="1">Đang hoạt động</option>
-                                <option value="0" selected>Đã khóa</option>
-                            </c:otherwise>
-                        </c:choose>
+                        <option value="1" ${cate.status == 1 ? 'selected' : ''}>Đang hoạt động</option>
+                        <option value="0" ${cate.status == 0 ? 'selected' : ''}>Đã khóa</option>
                     </select>
+                    <div class="invalid-feedback">Vui lòng chọn trạng thái danh mục.</div>
                 </div>
 
                 <!-- Ảnh hiện tại -->
@@ -99,8 +107,8 @@
                             </c:choose>
                             <img src="<c:out value='${currentImageUrl}'/>"
                                  alt="Ảnh hiện tại của <c:out value='${cate.categoryname}'/>"
-                                 class="thumb-img">
-                            <span class="form-help mb-0">Ảnh này được giữ lại nếu bạn không chọn ảnh thay thế.</span>
+                                 class="thumb-img rounded border p-1" style="max-height: 80px;">
+                            <span class="form-help text-muted small d-block mt-1">Ảnh này được giữ lại nếu bạn không chọn ảnh thay thế.</span>
                         </div>
                     </div>
                 </c:if>

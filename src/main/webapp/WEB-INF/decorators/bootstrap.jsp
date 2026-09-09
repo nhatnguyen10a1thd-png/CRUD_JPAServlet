@@ -121,6 +121,8 @@
 
 <!-- Bootstrap 5.3 JS Bundle (includes Popper) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Form Validation script -->
+<script src="<c:url value='/assets/js/form-validation.js'/>"></script>
 <script>
     // Toggle sidebar if menu-toggle button exists
     document.getElementById("menu-toggle")?.addEventListener("click", function () {
