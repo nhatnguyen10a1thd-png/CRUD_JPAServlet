@@ -2,42 +2,24 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><c:out value="${product.productName}" default="Chi tiết sản phẩm"/> - Product Store</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="<c:url value='/assets/css/product.css'/>">
-</head>
-<body>
-<header class="site-header">
-    <div class="container site-header-inner">
-        <a class="brand" href="<c:url value='/home'/>"><i class="fas fa-box-open"></i><span>Product Store</span></a>
-        <nav class="site-nav" aria-label="Điều hướng chính">
-            <a href="<c:url value='/home'/>">Trang chủ</a>
-            <a class="active" href="<c:url value='/product'/>">Sản phẩm</a>
-            <a href="<c:url value='/admin/products'/>">Quản trị</a>
-        </nav>
-    </div>
-</header>
 
-<main class="detail-shell">
-    <div class="container">
-        <div class="breadcrumbs">
-            <a href="<c:url value='/home'/>">Trang chủ</a><i class="fas fa-chevron-right"></i>
-            <a href="<c:url value='/product'/>">Sản phẩm</a><i class="fas fa-chevron-right"></i>
-            <span><c:out value="${product.productName}" default="Chi tiết"/></span>
-        </div>
+<title><c:out value="${product.productName}" default="Chi tiết sản phẩm"/> - Cửa Hàng</title>
 
-        <c:choose>
-            <c:when test="${not empty product}">
-                <article class="detail-card">
-                    <div class="detail-media">
+<div>
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="<c:url value='/home'/>" class="text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="<c:url value='/product'/>" class="text-decoration-none">Sản phẩm</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><c:out value="${product.productName}" default="Chi tiết"/></li>
+        </ol>
+    </nav>
+
+    <c:choose>
+        <c:when test="${not empty product}">
+            <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+                <div class="row g-0">
+                    <div class="col-md-5 p-4 d-flex align-items-center justify-content-center bg-light">
                         <c:choose>
                             <c:when test="${not empty product.images}">
                                 <c:choose>
@@ -48,30 +30,49 @@
                                         <c:url value="/image" var="productImageUrl"><c:param name="fname" value="${product.images}"/></c:url>
                                     </c:otherwise>
                                 </c:choose>
-                                <img src="<c:out value='${productImageUrl}'/>" alt="Ảnh sản phẩm: <c:out value='${product.productName}'/>">
+                                <img src="<c:out value='${productImageUrl}'/>" alt="Ảnh sản phẩm: <c:out value='${product.productName}'/>"
+                                     class="img-fluid rounded-3 shadow-sm" style="max-height: 380px; object-fit: contain;">
                             </c:when>
-                            <c:otherwise><div class="image-placeholder"><i class="far fa-image"></i></div></c:otherwise>
+                            <c:otherwise>
+                                <div class="text-muted text-center p-5">
+                                    <i class="far fa-image fa-4x mb-2"></i>
+                                    <p class="small">Chưa có ảnh</p>
+                                </div>
+                            </c:otherwise>
                         </c:choose>
                     </div>
-                    <div class="detail-info">
-                        <span class="product-category"><c:out value="${product.category.categoryname}" default="Chưa phân loại"/></span>
-                        <h1><c:out value="${product.productName}"/></h1>
-                        <div class="detail-price"><fmt:formatNumber value="${product.price}" type="number" maxFractionDigits="2"/> ₫</div>
-                        <div class="detail-description">
-                            <c:choose>
-                                <c:when test="${not empty product.description}"><c:out value="${product.description}"/></c:when>
-                                <c:otherwise>Sản phẩm này chưa có mô tả.</c:otherwise>
-                            </c:choose>
+                    <div class="col-md-7 p-4 p-lg-5 d-flex flex-column justify-content-between">
+                        <div>
+                            <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 fs-7 rounded-pill">
+                                <c:out value="${product.category.categoryname}" default="Chưa phân loại"/>
+                            </span>
+                            <h1 class="h3 fw-bold text-dark mb-3"><c:out value="${product.productName}"/></h1>
+                            <div class="fs-3 fw-bold text-danger mb-4">
+                                <fmt:formatNumber value="${product.price}" type="number" maxFractionDigits="2"/> ₫
+                            </div>
+                            <div class="text-secondary mb-4 lh-base">
+                                <c:choose>
+                                    <c:when test="${not empty product.description}"><c:out value="${product.description}"/></c:when>
+                                    <c:otherwise><span class="text-muted fst-italic">Sản phẩm này chưa có mô tả.</span></c:otherwise>
+                                </c:choose>
+                            </div>
                         </div>
-                        <a class="btn btn-secondary" href="<c:url value='/product'/>"><i class="fas fa-arrow-left"></i>Quay lại danh sách</a>
+                        <div>
+                            <a class="btn btn-outline-secondary d-inline-flex align-items-center gap-2" href="<c:url value='/product'/>">
+                                <i class="fas fa-arrow-left"></i>Quay lại danh sách
+                            </a>
+                        </div>
                     </div>
-                </article>
-            </c:when>
-            <c:otherwise>
-                <div class="empty-state wide"><i class="fas fa-circle-exclamation"></i><h3>Không tìm thấy sản phẩm</h3><p>Sản phẩm không tồn tại hoặc đã ngừng hiển thị.</p><a class="btn btn-primary" href="<c:url value='/product'/>">Xem sản phẩm khác</a></div>
-            </c:otherwise>
-        </c:choose>
-    </div>
-</main>
-</body>
-</html>
+                </div>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="p-5 text-center bg-white rounded-3 shadow-sm">
+                <i class="fas fa-circle-exclamation fa-3x text-danger mb-3"></i>
+                <h5>Không tìm thấy sản phẩm</h5>
+                <p class="text-muted small">Sản phẩm không tồn tại hoặc đã ngừng hiển thị.</p>
+                <a class="btn btn-primary btn-sm" href="<c:url value='/product'/>">Xem sản phẩm khác</a>
+            </div>
+        </c:otherwise>
+    </c:choose>
+</div>
